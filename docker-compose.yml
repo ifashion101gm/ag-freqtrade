@@ -8,17 +8,29 @@ services:
     volumes:
       - ./user_data:/freqtrade/user_data
       - ./configs:/freqtrade/configs
+      # Mount the D3 bot package so BullBearD3Strategy can import it
+      - ./bullbear_d3_bot:/freqtrade/bullbear_d3_bot
     ports:
       - "127.0.0.1:8080:8080"
     environment:
-      - TZ=UTC
+      - TZ=Asia/Rangoon
       - FREQTRADE__API_SERVER__USERNAME=${API_USERNAME}
       - FREQTRADE__API_SERVER__PASSWORD=${API_PASSWORD}
       - FREQTRADE__API_SERVER__JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      # Vantage MT5 credentials (used by vantage_connector.py)
+      - VANTAGE_MT5_LOGIN=${VANTAGE_MT5_LOGIN}
+      - VANTAGE_MT5_PASSWORD=${VANTAGE_MT5_PASSWORD}
+      - VANTAGE_MT5_SERVER=${VANTAGE_MT5_SERVER}
+      # Bot mode
+      - BOT_DRY_RUN=${BOT_DRY_RUN:-true}
+      - BOT_SYMBOL=${BOT_SYMBOL:-XAUUSD}
+      # Telegram alerts
+      - FREQTRADE__TELEGRAM__TOKEN=${TELEGRAM_BOT_TOKEN}
+      - FREQTRADE__TELEGRAM__CHAT_ID=${TELEGRAM_CHAT_ID}
     command: >
       trade
       --config /freqtrade/configs/config.json
-      --strategy SampleStrategy
+      --strategy BullBearD3Strategy
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
 
   nginx:

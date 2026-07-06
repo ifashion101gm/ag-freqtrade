@@ -1,0 +1,98 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# 1BullBear D3 Cycle – Strategy Config (Vantage Forex / Prop Firm)
+# Source: https://youtu.be/Z4uWaqiE1Iw
+# ─────────────────────────────────────────────────────────────────────────────
+
+meta:
+  name: "1BullBear_D3_SMC"
+  source_video: "https://youtu.be/Z4uWaqiE1Iw"
+  version: "1.0"
+
+# ─── Account & Risk ──────────────────────────────────────────────────────────
+account:
+  balance: 10000            # starting balance USD (updated live from MT5)
+  risk_pct: 0.5             # 0.5% risk per trade in paper/ramp; set to 1.0 for live
+  max_daily_loss_r: 2.0     # stop trading if daily loss >= 2R (Prop Firm rule)
+  max_daily_trades: 3       # max trades per day (consistency guard)
+
+# ─── Killzones (MMT = Asia/Rangoon UTC+6:30) ─────────────────────────────────
+killzones_mmt:
+  london:  ["15:00", "17:00"]   # 3–5pm MMT (London open = 9:30–11:30 UTC)
+  ny_am:   ["19:30", "22:00"]   # NY AM session
+  ny_pm:   ["21:00", "23:30"]   # NY PM / overlap
+
+# ─── HTF Bias (Phase 1) ──────────────────────────────────────────────────────
+bias:
+  premium_discount_lookback: 50  # bars to look back for range high/low on 4H/1H
+
+# ─── Liquidity (Phase 2) ─────────────────────────────────────────────────────
+liquidity:
+  equal_high_low_tolerance_pips:
+    XAUUSD: 5
+    EURUSD: 3
+    GBPUSD: 3
+    NAS100: 20
+    US30:   30
+  min_sweep_pips:
+    XAUUSD: 8
+    EURUSD: 5
+    GBPUSD: 5
+    NAS100: 30
+    US30:   40
+
+# ─── Market Structure (Phase 3) ──────────────────────────────────────────────
+structure:
+  displacement_body_pct: 0.6   # min candle body % for valid displacement / CHoCH
+
+# ─── POI – OB/FVG/Breaker (Phase 4) ─────────────────────────────────────────
+poi:
+  fvg_min_pips:
+    XAUUSD: 4
+    EURUSD: 3
+    GBPUSD: 3
+    NAS100: 15
+    US30:   20
+
+# ─── LTF Trigger (Phase 5) ───────────────────────────────────────────────────
+trigger:
+  time_stop_bars: 12   # bars (1m) – invalidate setup if not triggered within 12m
+
+# ─── Execution / SL Buffer (Phase 6) ────────────────────────────────────────
+execution:
+  sl_buffer_pips:
+    XAUUSD: 1.5
+    EURUSD: 1.0
+    GBPUSD: 1.0
+    NAS100: 5.0
+    US30:   8.0
+
+# ─── Trade Management (Phase 7) ──────────────────────────────────────────────
+manage:
+  tp_r:
+    tp1: 2.0    # TP1 at 2R (close 40%)
+    tp2: 3.5    # TP2 at 3.5R (close 40%), remaining 20% runner
+  be_at_r: 1.0  # move SL to breakeven when price reaches 1R
+  partials: [0.4, 0.4, 0.2]  # % of position closed at TP1, TP2, runner
+
+# ─── Journal (Phase 8) ───────────────────────────────────────────────────────
+journal:
+  path: "user_data/logs/d3_journal.jsonl"
+  consistency_guard: true
+
+# ─── Symbols ─────────────────────────────────────────────────────────────────
+symbols:
+  XAUUSD:
+    pip_value_per_lot: 1.0
+    point: 0.01
+  EURUSD:
+    pip_value_per_lot: 10.0
+    point: 0.00001
+  GBPUSD:
+    pip_value_per_lot: 10.0
+    point: 0.00001
+  NAS100:
+    pip_value_per_lot: 1.0
+    point: 0.1
+  US30:
+    pip_value_per_lot: 1.0
+    point: 0.1

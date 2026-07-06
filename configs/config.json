@@ -1,21 +1,22 @@
 {
-  "max_open_trades": 3,
-  "stake_currency": "USDT",
+  "max_open_trades": 1,
+  "stake_currency": "USD",
   "stake_amount": 100,
-  "amend_last_stake_amount": false,
   "tradable_balance_ratio": 0.99,
   "fiat_display_currency": "USD",
   "dry_run": true,
-  "dry_run_wallet": 1000,
-  "cancel_open_orders_on_exit": false,
-  "timeframe": "5m",
+  "dry_run_wallet": 10000,
+  "cancel_open_orders_on_exit": true,
+  "timeframe": "1m",
   "exchange": {
-    "name": "kraken",
-    "sandbox": false,
+    "name": "oanda",
+    "_comment": "Vantage Markets via CCXT OANDA-compatible adapter. Update name/key/secret with your Vantage API details.",
+    "sandbox": true,
     "key": "",
     "secret": "",
-    "pairs_only_import_from_exchange": false,
-    "ccxt_config": {},
+    "ccxt_config": {
+      "accountType": "margin"
+    },
     "ccxt_async_config": {}
   },
   "pairlists": [
@@ -25,29 +26,32 @@
   ],
   "exchange_pairs": {
     "whitelist": [
-      "BTC/USDT",
-      "ETH/USDT",
-      "SOL/USDT",
-      "ADA/USDT",
-      "DOT/USDT"
+      "XAU/USD",
+      "EUR/USD",
+      "GBP/USD"
     ],
-    "blacklist": [
-      "AUD/*",
-      "CAD/*",
-      "GBP/*",
-      "EUR/*",
-      "JPY/*",
-      "USD/*",
-      "USDC/*",
-      "BUSD/*",
-      "TUSD/*",
-      "PAX/*",
-      "USDK/*",
-      "UST/*",
-      "DKK/*",
-      "NOK/*",
-      "SEK/*"
-    ]
+    "blacklist": []
+  },
+  "unfilledtimeout": {
+    "entry": 10,
+    "exit": 10,
+    "exit_timeout_count": 0,
+    "unit": "minutes"
+  },
+  "entry_pricing": {
+    "price_side": "same",
+    "use_order_book": false,
+    "order_book_top": 1,
+    "price_last_balance": 0.0,
+    "check_depth_of_market": {
+      "enabled": false,
+      "bids_to_ask_delta": 1
+    }
+  },
+  "exit_pricing": {
+    "price_side": "same",
+    "use_order_book": false,
+    "order_book_top": 1
   },
   "api_server": {
     "enabled": true,
@@ -61,30 +65,28 @@
   },
   "telegram": {
     "enabled": false,
+    "_comment": "Set enabled:true and supply token/chat_id via .env TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID",
     "token": "",
     "chat_id": "",
     "notification_settings": {
       "status": "on",
       "warning": "on",
       "startup": "on",
-      "buy": "on",
-      "sell": "on",
-      "buy_cancel": "on",
-      "sell_cancel": "on",
-      "buy_fill": "on",
-      "sell_fill": "on",
+      "entry": "on",
+      "exit": "on",
+      "entry_cancel": "on",
+      "exit_cancel": "on",
+      "entry_fill": "on",
+      "exit_fill": "on",
       "protection_trigger": "on",
       "protection_trigger_global": "on"
     }
   },
   "db_url": "sqlite:////freqtrade/user_data/tradesv3.sqlite",
   "initial_state": "running",
-  "force_entry_table": {},
-  "bot_name": "freqtrade_gcp_bot",
-  "initial_candle_limit": 100,
-  "logging": {
-    "features": {
-      "code_comment": false
-    }
+  "bot_name": "bullbear_d3_vantage",
+  "initial_candle_limit": 200,
+  "internals": {
+    "process_throttle_secs": 5
   }
 }
