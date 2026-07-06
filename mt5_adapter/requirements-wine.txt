@@ -1,0 +1,6 @@
+Flask==3.0.3
+MetaTrader5==5.0.45
+waitress==3.0.0
+pandas==2.2.1
+pytz==2024.1
+requests==2.31.0
