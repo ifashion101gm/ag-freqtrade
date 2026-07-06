@@ -1,0 +1,131 @@
+# 1BullBear D3 – On-Chart Examples
+# Video: https://youtu.be/Z4uWaqiE1Iw
+# Extracted 2026-07-04
+
+meta:
+  strategy: "1BullBear_D3_SMC"
+  version: "1.0.0"
+  source_video: "https://youtu.be/Z4uWaqiE1Iw"
+  language: "my-MM"
+  timeframe_stack: ["4h","1h","15m","5m","1m"]
+
+account:
+  balance: 100000      # prop 100k – change
+  risk_pct: 1.0        # D3: 0.5-1.0%
+  max_daily_loss_r: 2.0
+  max_daily_trades: 4
+  max_trades_per_killzone: 2
+  consistency_variance_pct: 2.0
+
+killzones_mmt:  # Asia/Rangoon – 1BullBear native
+  asia_range: ["06:00","11:00"]
+  london: ["15:00","17:00"]
+  ny_am: ["19:30","22:00"]
+  ny_pm: ["21:00","23:30"]
+  flat_before_news_min: 5
+  flat_after_news_min: 5
+
+# Phase 1 – HTF Bias
+bias:
+  htf_tfs: ["4h","1h"]
+  use_ema_filter: false
+  premium_discount_lookback: 60  # swing HL range
+  only_discount_longs: true
+  only_premium_shorts: true
+
+# Phase 2 – Liquidity
+liquidity:
+  equal_high_low_tolerance_pips:
+    XAUUSD: 5
+    NAS100: 30
+    US30: 40
+    EURUSD: 3
+  sweep_wick_close_back_bars: 3
+  min_sweep_pips:
+    XAUUSD: 8
+    NAS100: 25
+
+# Phase 3 – MSS / CHoCH
+structure:
+  mss_tf: "15m"
+  displacement_body_pct: 55   # body >55% range
+  confirm_close: true
+  invalidate_bars: 12
+
+# Phase 4 – POI
+poi:
+  types: ["OB","FVG","Breaker"]
+  poi_tf: "5m"
+  fvg_min_pips:
+    XAUUSD: 4
+    NAS100: 15
+  ob_reject_wick: true
+  max_poi_age_bars_15m: 20
+
+# Phase 5 – LTF Trigger
+trigger:
+  trigger_tf: "1m"
+  require_ltf_choch: true
+  entry_model: "fvg_retest"   # options: market_mss, fvg_retest, ob_50
+  time_stop_bars: 12
+
+# Phase 6 – Execution
+execution:
+  sl_buffer_pips:
+    XAUUSD: 1.5
+    XAUUSD_points: 15
+    NAS100: 5.0
+    US30: 8.0
+    EURUSD: 1.2
+  sl_swing_lookback: 3
+  entry_split: [0.5, 0.5]  # 50% CE limit, 50% market confirm
+  max_spread_pips:
+    XAUUSD: 1.8
+    NAS100: 1.2
+
+# Phase 7 – Manage
+manage:
+  tp_r:
+    tp1: 2.0
+    tp2: 3.5
+  partials: [0.4, 0.4, 0.2]
+  be_at_r: 1.0
+  be_buffer_pips: 0.5
+  trail_tf: "15m"
+  time_exit_bars_5m: 40   # NY lunch flat
+  stall_exit_bars_5m: 8
+
+# Phase 8 – Journal
+journal:
+  path: "logs/trades.jsonl"
+  screenshot: false
+  prop_consistency_check: true
+
+symbols:
+  XAUUSD:
+    pip_value_per_lot: 1.0
+    point_value: 0.1
+    contract_size: 100
+  NAS100:
+    pip_value_per_lot: 1.0
+    contract_size: 1
+  EURUSD:
+    pip_value_per_lot: 10.0
+
+# D3 video reference examples
+d3_examples:
+  - id: 1
+    symbol: XAUUSD
+    dir: long
+    killzone: london
+    result_r: 3.2
+  - id: 2
+    symbol: NAS100
+    dir: short
+    killzone: ny_am
+    result_r: 2.1
+  - id: 4
+    symbol: XAUUSD
+    dir: long
+    killzone: ny_pm
+    result_r: 4.7

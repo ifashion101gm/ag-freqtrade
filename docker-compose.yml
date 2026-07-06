@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  freqtrade:
+    image: freqtradeorg/freqtrade:stable
+    container_name: freqtrade
+    restart: unless-stopped
+    volumes:
+      - ./user_data:/freqtrade/user_data
+      - ./configs:/freqtrade/configs
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      - TZ=UTC
+      - FREQTRADE__API_SERVER__USERNAME=${API_USERNAME}
+      - FREQTRADE__API_SERVER__PASSWORD=${API_PASSWORD}
+      - FREQTRADE__API_SERVER__JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    command: >
+      trade
+      --config /freqtrade/configs/config.json
+      --strategy SampleStrategy
+      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./configs/certs:/etc/nginx/certs:ro
+    depends_on:
+      - freqtrade

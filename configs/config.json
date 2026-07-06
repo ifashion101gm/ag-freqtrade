@@ -1,0 +1,90 @@
+{
+  "max_open_trades": 3,
+  "stake_currency": "USDT",
+  "stake_amount": 100,
+  "amend_last_stake_amount": false,
+  "tradable_balance_ratio": 0.99,
+  "fiat_display_currency": "USD",
+  "dry_run": true,
+  "dry_run_wallet": 1000,
+  "cancel_open_orders_on_exit": false,
+  "timeframe": "5m",
+  "exchange": {
+    "name": "kraken",
+    "sandbox": false,
+    "key": "",
+    "secret": "",
+    "pairs_only_import_from_exchange": false,
+    "ccxt_config": {},
+    "ccxt_async_config": {}
+  },
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "exchange_pairs": {
+    "whitelist": [
+      "BTC/USDT",
+      "ETH/USDT",
+      "SOL/USDT",
+      "ADA/USDT",
+      "DOT/USDT"
+    ],
+    "blacklist": [
+      "AUD/*",
+      "CAD/*",
+      "GBP/*",
+      "EUR/*",
+      "JPY/*",
+      "USD/*",
+      "USDC/*",
+      "BUSD/*",
+      "TUSD/*",
+      "PAX/*",
+      "USDK/*",
+      "UST/*",
+      "DKK/*",
+      "NOK/*",
+      "SEK/*"
+    ]
+  },
+  "api_server": {
+    "enabled": true,
+    "listen_ip_address": "0.0.0.0",
+    "listen_port": 8080,
+    "username": "admin",
+    "password": "adminSecurePassword456!",
+    "jwt_secret_key": "9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+    "CORS_origins": [],
+    "verbosity": "info"
+  },
+  "telegram": {
+    "enabled": false,
+    "token": "",
+    "chat_id": "",
+    "notification_settings": {
+      "status": "on",
+      "warning": "on",
+      "startup": "on",
+      "buy": "on",
+      "sell": "on",
+      "buy_cancel": "on",
+      "sell_cancel": "on",
+      "buy_fill": "on",
+      "sell_fill": "on",
+      "protection_trigger": "on",
+      "protection_trigger_global": "on"
+    }
+  },
+  "db_url": "sqlite:////freqtrade/user_data/tradesv3.sqlite",
+  "initial_state": "running",
+  "force_entry_table": {},
+  "bot_name": "freqtrade_gcp_bot",
+  "initial_candle_limit": 100,
+  "logging": {
+    "features": {
+      "code_comment": false
+    }
+  }
+}
